@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Federal Court Deadline Calculator</title>
+  <meta name="description" content="Computes federal litigation deadlines under Fed. R. Civ. P. 6(a), accounting for weekends and federal holidays." />
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <p class="eyebrow">Fed. R. Civ. P. 6(a) &middot; time computation</p>
+      <h1>Federal court deadline calculator</h1>
+      <p class="dek">
+        Enter a triggering event and a rule, and this tool applies Rule 6(a)'s
+        counting method exactly: the day of the event is excluded, every
+        intervening day is counted, and the deadline rolls forward off any
+        Saturday, Sunday, or federal legal holiday.
+      </p>
+    </header>
+
+    <div class="disclaimer">
+      This tool is for educational reference only and is not legal advice.
+      Local rules, standing orders, and case-specific deadlines can override
+      these defaults &mdash; always confirm against the docket and applicable
+      rules in an actual matter.
+    </div>
+
+    <section class="card" id="judiciary-watch">
+      <h2 class="section-title">Federal judiciary watch <span id="jw-asof"></span></h2>
+      <div id="jw-items"></div>
+      <p class="hint" style="margin-top: 0.75rem;">
+        This is a manually-curated, dated snapshot &mdash; not a live feed.
+        See <a href="https://www.uscourts.gov/data-news/judiciary-news" target="_blank" rel="noopener">uscourts.gov/data-news</a>
+        for current updates.
+      </p>
+    </section>
+
+    <form class="card" id="deadline-form">
+      <h2 class="section-title">Compute a deadline</h2>
+
+      <div class="field">
+        <label for="rule-select">Deadline type</label>
+        <select id="rule-select"></select>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label id="trigger-label" for="trigger-date">Triggering event date</label>
+          <input type="date" id="trigger-date" required />
+        </div>
+        <div class="field" id="custom-row" style="display: none;">
+          <label for="custom-days">Number of days</label>
+          <input type="number" id="custom-days" min="1" step="1" placeholder="e.g. 14" />
+        </div>
+      </div>
+
+      <p class="hint" id="form-error" style="color: var(--stamp-red); font-style: normal;"></p>
+
+      <button class="compute" type="submit">Calculate deadline</button>
+    </form>
+
+    <div class="result" id="result">
+      <div class="stamp-wrap">
+        <div class="stamp">
+          <div class="stamp-inner">
+            <span class="stamp-label">Deadline</span>
+            <span class="stamp-date" id="stamp-date">&mdash;</span>
+          </div>
+        </div>
+        <div class="result-detail">
+          <p class="rule-name" id="result-rule-name"></p>
+          <p class="citation" id="result-citation"></p>
+          <p class="deadline-days" id="result-days"></p>
+          <div class="result-actions">
+            <button type="button" class="link-btn" id="add-to-timeline">+ Add to timeline</button>
+            <button type="button" class="link-btn" id="use-as-new-trigger">Use as trigger for next deadline &rarr;</button>
+          </div>
+          <p class="shutdown-note" id="shutdown-note"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="steps-card" style="display: block;">
+      <h2 class="section-title">How this was computed</h2>
+      <ol class="steps" id="steps-list">
+        <li>Choose a deadline type and enter the triggering date to see the calculation.</li>
+      </ol>
+    </div>
+
+    <section class="card" id="timeline-section">
+      <h2 class="section-title">Matter timeline</h2>
+      <p class="hint" style="margin: -0.25rem 0 1rem;">
+        Chain deadlines together &mdash; compute one, add it to the timeline,
+        then use it as the trigger for the next. Saved in this browser only.
+      </p>
+
+      <p id="timeline-empty" class="hint">No deadlines added yet. Compute one above and click "Add to timeline."</p>
+
+      <table class="timeline-table" id="timeline-table">
+        <tbody id="timeline-body"></tbody>
+      </table>
+
+      <div class="timeline-actions">
+        <button type="button" id="download-ics" disabled>Download .ics (calendar)</button>
+        <button type="button" id="download-csv" disabled>Download .csv</button>
+        <button type="button" id="clear-timeline" class="danger" disabled>Clear timeline</button>
+      </div>
+    </section>
+
+    <footer>
+      Implements Fed. R. Civ. P. 6(a)(1) &amp; 5 U.S.C. &sect; 6103 &middot;
+      <a href="https://github.com/" id="repo-link">source on GitHub</a>
+    </footer>
+  </div>
+
+  <script src="src/holidays.js"></script>
+  <script src="src/deadlineEngine.js"></script>
+  <script src="src/rules.js"></script>
+  <script src="src/ics.js"></script>
+  <script src="src/judiciaryWatch.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

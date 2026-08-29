@@ -1,0 +1,19 @@
+{
+  "name": "federal-deadline-calculator",
+  "version": "2.0.0",
+  "description": "Computes federal litigation deadlines under Fed. R. Civ. P. 6(a), with federal holiday handling, a matter timeline, calendar export, and a CLI.",
+  "main": "src/deadlineEngine.js",
+  "bin": {
+    "deadline": "bin/deadline.js"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "test:unit": "jest tests/deadlineEngine.test.js tests/ics.test.js tests/rules.test.js",
+    "test:property": "jest tests/property.test.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "fast-check": "^3.19.0",
+    "jest": "^29.7.0"
+  }
+}
